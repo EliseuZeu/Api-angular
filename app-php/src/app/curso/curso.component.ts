@@ -1,39 +1,52 @@
-import { Component } from '@angular/core';
+import { CursoService } from './curso.service';
+import { Component, OnInit } from '@angular/core';
+import { Curso } from './curso';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-curso',
   standalone: true,
-  imports: [],
+  imports: [HttpClientModule],
   templateUrl: './curso.component.html',
-  styleUrl: './curso.component.css'
+  styleUrls: ['./curso.component.css']
 })
-export class CursoComponent {
+export class CursoComponent implements OnInit {
 
-  constructor() {}
+  vetor: Curso[] = [];
 
+  //Objeto curso da classe curso
+  curso = new Curso();
+
+  constructor(private cursoService: CursoService) {}
 
   ngOnInit(): void {
-
+    this.selecao();
   }
 
-
-  //CADASTRO
-  cadastro(): void{
+  // CADASTRO
+  cadastro(): void {
     alert("Cadastro");
   }
 
-  //SELECAO
-  selecao():void {
-    alert("selecao");
+  // SELEÇÃO
+  selecao(): void {
+    this.cursoService.obterCursos().subscribe(
+      (res: Curso[]) => {
+        this.vetor = res;
+      },
+      error => {
+        console.error('Erro ao obter cursos:', error);
+      }
+    );
   }
 
-  //ALTERAR
+  // ALTERAR
   alterar(): void {
-    alert("alterar");
+    alert("Alterar");
   }
 
-  //REMOVER
+  // REMOVER
   remover(): void {
-    alert("remover");
+    alert("Remover");
   }
 }
